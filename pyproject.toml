@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "snake-ai"
+version = "0.1.0"
+description = "A Snake game with reinforcement learning AI"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+dependencies = [
+    # Core dependencies
+    "pygame>=2.5.0",
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+
+    # ML/DL utilities
+    "tensorboard>=2.15.0",     # For visualizing training metrics
+    "gymnasium>=0.29.0",       # OpenAI Gym successor for RL environments
+    "tqdm>=4.66.0",           # Progress bars
+
+    # Data manipulation and analysis
+    "pandas>=2.0.0",          # Data manipulation
+    "matplotlib>=3.7.0",      # Plotting and visualization
+    "seaborn>=0.12.0",        # Statistical visualization
+
+    # Project utilities
+    "pyyaml>=6.0.0",         # Configuration management
+    "python-dotenv>=1.0.0",  # Environment variable management
+    "loguru>=0.7.0",         # Better logging
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.0.0",
+    "pytest-cov>=4.1.0",      # Code coverage
+    "pytest-mock>=3.10.0",    # Mocking in tests
+
+    # Code quality
+    "black>=23.0.0",          # Code formatting
+    "isort>=5.12.0",          # Import sorting
+    "flake8>=6.0.0",          # Style guide enforcement
+    "mypy>=1.5.0",           # Static type checking
+    "pylint>=3.0.0",         # Code analysis
+
+    # Development tools
+    "ipython>=8.0.0",        # Enhanced interactive Python
+    "jupyter>=1.0.0",        # Notebook support
+    "pre-commit>=3.3.0",     # Git hooks
+]
+
+profiling = [
+    "py-spy>=0.3.0",         # Sampling profiler
+    "memory_profiler>=0.61.0", # Memory profiling
+    "line_profiler>=4.0.0",   # Line-by-line profiling
+]
+
+docs = [
+    "sphinx>=7.0.0",         # Documentation generator
+    "sphinx-rtd-theme>=1.3.0", # Read the Docs theme
+    "sphinx-autodoc-typehints>=1.24.0", # Type hints support
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/game", "src/ai", "src/utils"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+^/docs/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+skip = ["docs/"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra -q --cov=src --cov-report=term-missing"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/snake-ai"
+"Bug Reports" = "https://github.com/yourusername/snake-ai/issues"

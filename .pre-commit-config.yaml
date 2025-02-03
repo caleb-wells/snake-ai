@@ -1,0 +1,61 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+    -   id: trailing-whitespace
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: end-of-file-fixer
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: check-yaml
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: check-toml
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: check-added-large-files
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: debug-statements
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: detect-private-key
+        stages: [pre-commit, pre-merge-commit, pre-push]
+    -   id: check-merge-conflict
+        stages: [pre-commit, pre-merge-commit, pre-push]
+
+-   repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+    -   id: black
+        language_version: python3
+        stages: [pre-commit, pre-merge-commit, pre-push]
+
+-   repo: https://github.com/pycqa/isort
+    rev: 6.0.0
+    hooks:
+    -   id: isort
+        args: ["--profile", "black", "--filter-files"]
+        stages: [pre-commit, pre-merge-commit, pre-push]
+
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.9.4
+    hooks:
+    -   id: ruff
+        args: ["--fix"]
+        stages: [pre-commit, pre-merge-commit, pre-push]
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.14.1
+    hooks:
+    -   id: mypy
+        additional_dependencies:
+            - types-PyYAML
+        args: [
+            "--ignore-missing-imports",
+            "--disallow-untyped-defs",
+            "--check-untyped-defs",
+            "--warn-redundant-casts"
+        ]
+        stages: [pre-commit, pre-merge-commit, pre-push]
+
+-   repo: https://github.com/kynan/nbstripout
+    rev: 0.8.1
+    hooks:
+    -   id: nbstripout
+        stages: [pre-commit, pre-merge-commit, pre-push]
