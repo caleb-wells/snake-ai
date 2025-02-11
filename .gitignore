@@ -45,7 +45,6 @@ htmlcov/
 
 # ML/DL specific
 runs/
-checkpoints/
 *.pth
 *.onnx
 *.pt
@@ -57,4 +56,8 @@ tensorboard/
 
 # Logs
 *.log
-logs/
+logs/*
+
+# Ruff
+.mypy_cache/
+.ruff_cache/

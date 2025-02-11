@@ -20,7 +20,7 @@ dependencies = [
     # ML/DL utilities
     "tensorboard>=2.15.0",     # For visualizing training metrics
     "gymnasium>=0.29.0",       # OpenAI Gym successor for RL environments
-    "tqdm>=4.66.0",           # Progress bars
+    "tqdm>=4.66.0",            # Progress bars
 
     # Data manipulation and analysis
     "pandas>=2.0.0",          # Data manipulation
@@ -44,24 +44,28 @@ dev = [
     "black>=23.0.0",          # Code formatting
     "isort>=5.12.0",          # Import sorting
     "flake8>=6.0.0",          # Style guide enforcement
-    "mypy>=1.5.0",           # Static type checking
-    "pylint>=3.0.0",         # Code analysis
+    "mypy>=1.5.0",            # Static type checking
+    "pylint>=3.0.0",          # Code analysis
 
     # Development tools
     "ipython>=8.0.0",        # Enhanced interactive Python
     "jupyter>=1.0.0",        # Notebook support
     "pre-commit>=3.3.0",     # Git hooks
 ]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.1.0",
+]
 
 profiling = [
-    "py-spy>=0.3.0",         # Sampling profiler
+    "py-spy>=0.3.0",           # Sampling profiler
     "memory_profiler>=0.61.0", # Memory profiling
-    "line_profiler>=4.0.0",   # Line-by-line profiling
+    "line_profiler>=4.0.0",    # Line-by-line profiling
 ]
 
 docs = [
-    "sphinx>=7.0.0",         # Documentation generator
-    "sphinx-rtd-theme>=1.3.0", # Read the Docs theme
+    "sphinx>=7.0.0",                    # Documentation generator
+    "sphinx-rtd-theme>=1.3.0",          # Read the Docs theme
     "sphinx-autodoc-typehints>=1.24.0", # Type hints support
 ]
 
@@ -99,11 +103,11 @@ warn_unreachable = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "-ra -q --cov=src --cov-report=term-missing"
-filterwarnings = [
-    "ignore::DeprecationWarning",
-    "ignore::UserWarning",
-]
+addopts = "-v"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
 
 [project.urls]
 "Homepage" = "https://github.com/yourusername/snake-ai"

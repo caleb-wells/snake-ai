@@ -59,3 +59,11 @@ repos:
     hooks:
     -   id: nbstripout
         stages: [pre-commit, pre-merge-commit, pre-push]
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        types: [python]
+        pass_filenames: false
