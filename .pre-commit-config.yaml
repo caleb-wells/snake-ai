@@ -59,6 +59,7 @@ repos:
     hooks:
     -   id: nbstripout
         stages: [pre-commit, pre-merge-commit, pre-push]
+
 -   repo: local
     hooks:
     -   id: pytest
@@ -67,3 +68,9 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+    -   id: pylint-local
+        name: pylint (local)
+        entry: pylint --recursive=y src
+        language: system
+        types: [python]
+        stages: [pre-commit, pre-merge-commit, pre-push]
