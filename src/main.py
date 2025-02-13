@@ -15,6 +15,7 @@ from utils.helpers import setup_training_dirs
 def load_model_and_metrics(
     model_path: str, metrics_path: str, agent: DQNAgent, load_checkpoint: bool
 ) -> Tuple[int, List[int]]:
+    """Load model and training metrics from disk"""
     best_score = 0
     episode_scores = []
 
@@ -46,6 +47,7 @@ def run_training_episode(
     render_training: bool,
     game_speed: int,
 ) -> Tuple[int, dict]:
+    """Run a single training episode"""
     state = env.reset()
     for step in range(max_steps):
         action = agent.act(state)
@@ -72,6 +74,7 @@ def train(
     game_speed: int = 10,
     load_checkpoint: bool = True,
 ) -> None:
+    """Train the Snake AI"""
     print("\n=== Snake AI Training ===")
     print(
         f"Device: {torch.device('mps' if torch.backends.mps.is_available() else 'cpu')}"

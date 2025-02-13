@@ -56,9 +56,6 @@ class SnakeEnvironment:
                 return food
 
     def _get_state(self) -> np.ndarray:
-        # Create 11 element state vector
-        state = []
-
         # Danger straight, right, left
         point_l = self._point_in_direction("left")
         point_r = self._point_in_direction("right")
@@ -71,31 +68,32 @@ class SnakeEnvironment:
         dir_d = self.snake.direction == (0, 1)
 
         state = [
-            # Danger straight
-            (dir_r and self._is_collision(point_r))
-            or (dir_l and self._is_collision(point_l))
-            or (dir_u and self._is_collision(point_u))
-            or (dir_d and self._is_collision(point_d)),
-            # Danger right
-            (dir_u and self._is_collision(point_r))
-            or (dir_d and self._is_collision(point_l))
-            or (dir_l and self._is_collision(point_u))
-            or (dir_r and self._is_collision(point_d)),
-            # Danger left
-            (dir_d and self._is_collision(point_r))
-            or (dir_u and self._is_collision(point_l))
-            or (dir_r and self._is_collision(point_u))
-            or (dir_l and self._is_collision(point_d)),
-            # Move direction
-            dir_l,
-            dir_r,
-            dir_u,
-            dir_d,
-            # Food location
-            self.food[0] < self.snake.head[0],  # food left
-            self.food[0] > self.snake.head[0],  # food right
-            self.food[1] < self.snake.head[1],  # food up
-            self.food[1] > self.snake.head[1],  # food down
+            int(
+                (dir_r and self._is_collision(point_r))
+                or (dir_l and self._is_collision(point_l))
+                or (dir_u and self._is_collision(point_u))
+                or (dir_d and self._is_collision(point_d))
+            ),
+            int(
+                (dir_u and self._is_collision(point_r))
+                or (dir_d and self._is_collision(point_l))
+                or (dir_l and self._is_collision(point_u))
+                or (dir_r and self._is_collision(point_d))
+            ),
+            int(
+                (dir_d and self._is_collision(point_r))
+                or (dir_u and self._is_collision(point_l))
+                or (dir_r and self._is_collision(point_u))
+                or (dir_l and self._is_collision(point_d))
+            ),
+            int(dir_l),
+            int(dir_r),
+            int(dir_u),
+            int(dir_d),
+            int(self.food[0] < self.snake.head[0]),
+            int(self.food[0] > self.snake.head[0]),
+            int(self.food[1] < self.snake.head[1]),
+            int(self.food[1] > self.snake.head[1]),
         ]
 
         return np.array(state, dtype=int)

@@ -71,9 +71,9 @@ snake-ai/
 │   └── utils/          # Helper functions
 ├── tests/              # Unit tests
 ├── notebooks/          # Jupyter notebooks
-├── data/              # Training data
-├── logs/              # Training logs
-└── checkpoints/       # Model checkpoints
+├── data/               # Training data
+├── logs/               # Training logs
+└── checkpoints/        # Model checkpoints
 ```
 
 ### Code Quality Tools

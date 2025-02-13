@@ -60,10 +60,10 @@ class DQNAgent:
         if rng.random() < self.epsilon:
             return int(rng.integers(self.action_size))
 
-        with torch.no_grad():
-            state = torch.FloatTensor(state).unsqueeze(0).to(self.device)
-            q_values = self.policy_net(state)
-            return int(q_values.max(1)[1].item())
+        # Convert the numpy array to a torch tensor without reassigning to 'state'
+        state_tensor = torch.FloatTensor(state).unsqueeze(0).to(self.device)
+        q_values = self.policy_net(state_tensor)
+        return int(q_values.max(1)[1].item())
 
     def train_step(self) -> Optional[float]:
         if len(self.memory) < self.batch_size:

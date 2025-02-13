@@ -22,7 +22,7 @@ class ReplayMemory:
     ) -> None:
         self.memory.append((state, action, reward, next_state, done))
 
-    def sample(self, batch_size: int) -> Tuple[torch.FloatTensor, ...]:
+    def sample(self, batch_size: int) -> Tuple[torch.Tensor, ...]:
         transitions = random.sample(list(self.memory), batch_size)
         batch = list(zip(*transitions))
         return (
