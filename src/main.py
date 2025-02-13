@@ -81,13 +81,11 @@ def train(
 ) -> None:
     """Train the Snake AI."""
     print("\n=== Snake AI Training ===")
-    print(
-        f"Device: {torch.device('mps' if torch.backends.mps.is_available() else 'cpu')}"
-    )
-
     setup_training_dirs()
     env = SnakeEnvironment(render_mode=render_training)
-    agent = DQNAgent()
+    agent = (
+        DQNAgent()
+    )  # Optionally pass the selected device to the agent, if supported.
 
     best_score, episode_scores = load_model_and_metrics(
         "checkpoints/snake_ai_model.pt",
@@ -130,10 +128,18 @@ def train(
     except (KeyboardInterrupt, SystemExit):
         print("\nTraining interrupted. Saving current model...")
         agent.save("checkpoints/snake_ai_model.pt")
-        # Do not re-raise the exception, exit gracefully.
     finally:
         env.close()
 
 
 if __name__ == "__main__":
+    # Device selection: prioritize CUDA, then MPS, then CPU.
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
+    print(f"Device: {device}")
+
     train(render_training=True, game_speed=75, load_checkpoint=True)
