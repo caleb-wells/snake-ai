@@ -1,0 +1,13 @@
+[MASTER]
+# Tells Pylint that pygame is a C extension module and that its members are
+# generated dynamically. This should prevent "no-member" errors for pygame.
+extension-pkg-allow-list=pygame
+
+[DESIGN]
+max-args=6
+
+[VARIABLES]
+dummy-variables-rgx=^(_.*|args)$
+
+[MESSAGES CONTROL]
+disable=R0917

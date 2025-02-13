@@ -1,3 +1,8 @@
+"""
+Main module for training the Snake AI. This script sets up the training environment,
+loads/saves model checkpoints and metrics, and runs training episodes.
+"""
+
 import json
 import os
 from typing import List, Tuple
@@ -15,7 +20,7 @@ from utils.helpers import setup_training_dirs
 def load_model_and_metrics(
     model_path: str, metrics_path: str, agent: DQNAgent, load_checkpoint: bool
 ) -> Tuple[int, List[int]]:
-    """Load model and training metrics from disk"""
+    """Load model and training metrics from disk."""
     best_score = 0
     episode_scores = []
 
@@ -24,7 +29,7 @@ def load_model_and_metrics(
         agent.load(model_path)
 
         if os.path.exists(metrics_path):
-            with open(metrics_path, "r") as f:
+            with open(metrics_path, "r", encoding="utf-8") as f:
                 metrics = json.load(f)
                 best_score = metrics.get("best_score", 0)
                 episode_scores = metrics.get("episode_scores", [])
@@ -47,7 +52,7 @@ def run_training_episode(
     render_training: bool,
     game_speed: int,
 ) -> Tuple[int, dict]:
-    """Run a single training episode"""
+    """Run a single training episode."""
     state = env.reset()
     for step in range(max_steps):
         action = agent.act(state)
@@ -74,27 +79,26 @@ def train(
     game_speed: int = 10,
     load_checkpoint: bool = True,
 ) -> None:
-    """Train the Snake AI"""
+    """Train the Snake AI."""
     print("\n=== Snake AI Training ===")
     print(
         f"Device: {torch.device('mps' if torch.backends.mps.is_available() else 'cpu')}"
     )
 
     setup_training_dirs()
-    model_path = "checkpoints/snake_ai_model.pt"
-    metrics_path = "logs/training_metrics.json"
-
     env = SnakeEnvironment(render_mode=render_training)
     agent = DQNAgent()
 
     best_score, episode_scores = load_model_and_metrics(
-        model_path, metrics_path, agent, load_checkpoint
+        "checkpoints/snake_ai_model.pt",
+        "logs/training_metrics.json",
+        agent,
+        load_checkpoint,
     )
     episode_lengths = []
 
     try:
-        progress_bar = tqdm(range(episodes), desc="Training")
-        for _ in progress_bar:
+        for _ in tqdm(range(episodes), desc="Training"):
             step, info = run_training_episode(
                 env, agent, max_steps, render_training, game_speed
             )
@@ -102,33 +106,31 @@ def train(
             episode_scores.append(info["score"])
             episode_lengths.append(step + 1)
 
-            progress_bar.set_postfix(
-                {
-                    "score": info["score"],
-                    "epsilon": f"{agent.epsilon:.2f}",
-                    "avg_score": f"{np.mean(episode_scores[-100:]):.2f}",
-                }
+            # Update training progress in the terminal.
+            tqdm.write(
+                f"score: {info['score']}, epsilon: {agent.epsilon:.2f}, "
+                f"avg_score: {np.mean(episode_scores[-100:]):.2f}"
             )
 
             if info["score"] > best_score:
                 best_score = info["score"]
                 print(f"\nNew best score! {best_score}")
-                agent.save(model_path)
+                agent.save("checkpoints/snake_ai_model.pt")
 
-            metrics = {
+            current_metrics = {
                 "best_score": best_score,
                 "episode_scores": episode_scores,
                 "episode_lengths": episode_lengths,
                 "last_epsilon": agent.epsilon,
                 "total_steps": agent.steps,
             }
-            with open(metrics_path, "w") as f:
-                json.dump(metrics, f)
+            with open("logs/training_metrics.json", "w", encoding="utf-8") as f:
+                json.dump(current_metrics, f)
 
     except (KeyboardInterrupt, SystemExit):
         print("\nTraining interrupted. Saving current model...")
-        agent.save(model_path)
-        raise
+        agent.save("checkpoints/snake_ai_model.pt")
+        # Do not re-raise the exception, exit gracefully.
     finally:
         env.close()
 
