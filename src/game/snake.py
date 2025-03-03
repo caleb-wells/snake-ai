@@ -46,7 +46,6 @@ class Snake:
         Grow the snake.
         This placeholder method indicates that the snake should not remove its tail when growing.
         """
-        # No additional code is needed; the docstring is sufficient.
         return
 
     def shrink(self) -> None:

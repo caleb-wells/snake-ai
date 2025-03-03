@@ -3,6 +3,7 @@ Main module for training the Snake AI. This script sets up the training environm
 loads/saves model checkpoints and metrics, and runs training episodes.
 """
 
+import argparse
 import json
 import os
 from typing import List, Tuple
@@ -12,9 +13,12 @@ import pygame
 import torch
 from tqdm import tqdm
 
+# pylint: disable=import-error
 from ai.agent import DQNAgent
 from game.environment import SnakeEnvironment
 from utils.helpers import setup_training_dirs
+
+# pylint: enable=import-error
 
 
 def load_model_and_metrics(
@@ -73,19 +77,17 @@ def run_training_episode(
 
 
 def train(
-    episodes: int = 10000,
+    episodes: int = 1000,
     max_steps: int = 2000,
     render_training: bool = True,
-    game_speed: int = 10,
+    game_speed: int = 50,
     load_checkpoint: bool = True,
 ) -> None:
     """Train the Snake AI."""
     print("\n=== Snake AI Training ===")
     setup_training_dirs()
     env = SnakeEnvironment(render_mode=render_training)
-    agent = (
-        DQNAgent()
-    )  # Optionally pass the selected device to the agent, if supported.
+    agent = DQNAgent()
 
     best_score, episode_scores = load_model_and_metrics(
         "checkpoints/snake_ai_model.pt",
@@ -133,13 +135,52 @@ def train(
 
 
 if __name__ == "__main__":
-    # Device selection: prioritize CUDA, then MPS, then CPU.
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
-    elif torch.backends.mps.is_available():
-        device = torch.device("mps")
-    else:
-        device = torch.device("cpu")
-    print(f"Device: {device}")
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--device",
+        type=str,
+        choices=["cuda", "mps", "cpu"],
+        help="Device to run the model on (cuda/mps/cpu)",
+    )
+    parser.add_argument(
+        "--render_training",
+        type=bool,
+        default=True,
+        help="Render training",
+    )
+    parser.add_argument(
+        "--game_speed",
+        type=int,
+        default=50,
+        help="Game speed",
+    )
+    parser.add_argument(
+        "--load_checkpoint",
+        type=bool,
+        default=True,
+        help="Load checkpoint",
+    )
+    args = parser.parse_args()
 
-    train(render_training=True, game_speed=75, load_checkpoint=True)
+    # Device selection: use argument if provided, otherwise auto-detect
+    if args.device:
+        device = torch.device(args.device)
+    else:
+        if torch.cuda.is_available():
+            device = torch.device("cuda")
+        elif torch.backends.mps.is_available():
+            device = torch.device("mps")
+        else:
+            device = torch.device("cpu")
+
+    # Print Game Arguments
+    print(f"Device: {device}")
+    print(f"Render training: {args.render_training}")
+    print(f"Game speed: {args.game_speed}")
+    print(f"Load checkpoint: {args.load_checkpoint}")
+
+    train(
+        render_training=args.render_training,
+        game_speed=args.game_speed,
+        load_checkpoint=args.load_checkpoint,
+    )
