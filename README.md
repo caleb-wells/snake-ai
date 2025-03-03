@@ -36,7 +36,7 @@ cd snake-ai
 chmod +x setup.sh
 
 # Run the setup
-./setup.sh
+./scripts/setup.sh
 ```
 
 3. Activate the virtual environment:
