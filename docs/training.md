@@ -28,14 +28,24 @@ python src/main.py
 
 ### Training Parameters
 
+- `device`: Device to run the model on (choices: cuda/mps/cpu, auto-detected if not specified)
 - `render_training`: Toggle visual rendering (default: True)
-- `game_speed`: Control game visualization speed (default: 10)
+- `game_speed`: Control game visualization speed (default: 50)
 - `load_checkpoint`: Continue from previous checkpoint (default: True)
 
 Example:
 ```bash
-python src/main.py --render_training True --game_speed 50
+python src/main.py --device=cuda --render_training=True --game_speed=50
 ```
+
+### Device Selection
+
+The training script automatically selects the best available device in this order:
+1. CUDA (if NVIDIA GPU is available)
+2. MPS (if Apple Silicon GPU is available)
+3. CPU (fallback option)
+
+You can also manually specify the device using the `--device` argument.
 
 ## Checkpoints
 
@@ -65,7 +75,7 @@ Metrics are saved in `logs/training_metrics.json`:
 - Best score achieved
 - Episode scores
 - Episode lengths
-- Current exploration rate
+- Current exploration rate (epsilon)
 - Total training steps
 
 ### Visual Feedback

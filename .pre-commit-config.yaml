@@ -54,12 +54,6 @@ repos:
         ]
         stages: [pre-commit, pre-merge-commit, pre-push]
 
--   repo: https://github.com/kynan/nbstripout
-    rev: 0.8.1
-    hooks:
-    -   id: nbstripout
-        stages: [pre-commit, pre-merge-commit, pre-push]
-
 -   repo: local
     hooks:
     -   id: pytest

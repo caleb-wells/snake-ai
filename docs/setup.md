@@ -21,7 +21,7 @@ chmod +x setup.sh
 
 3. Run setup script:
 ```bash
-./setup.sh
+./scripts/setup.sh
 ```
 
 The setup script will:

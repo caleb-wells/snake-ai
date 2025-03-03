@@ -52,7 +52,6 @@ tensorboard/
 
 # Jupyter Notebook
 .ipynb_checkpoints
-*.ipynb
 
 # Logs
 *.log
