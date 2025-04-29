@@ -26,7 +26,7 @@ For GPU acceleration (optional but recommended):
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/snake-ai.git
+git clone https://github.com/caleb-wells/snake-ai.git
 cd snake-ai
 ```
 
