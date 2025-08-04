@@ -135,7 +135,7 @@ rfc3986-validator==0.1.1
 rpds-py==0.22.3
 seaborn==0.13.2
 Send2Trash==1.8.3
-setuptools==75.8.0
+setuptools==78.1.1
 six==1.17.0
 -e git+ssh://git@github.com/caleb-wells/snake-ai.git@3c4f7ad81dade8590efd35acb354b17b872e97ad#egg=snake_ai
 sniffio==1.3.1
